@@ -55,10 +55,15 @@ function handleChatMessage(ws, wss, data, sender) {
 }
 
 function handleFileMessage(ws, wss, data, sender) {
+    console.log('Handling file message:', { 
+        ...data,
+        data: data.data ? '[DATA]' : 'null'
+    });
+
     const messageData = {
         type: 'message',
         sender: sender.name,
-        content: `发送了文件: ${data.name} (${formatFileSize(data.size)})`,
+        content: `发送了文件: ${data.name}`,
         file: {
             name: data.name,
             size: data.size,
@@ -68,9 +73,28 @@ function handleFileMessage(ws, wss, data, sender) {
     };
 
     if (data.targetId) {
-        handlePrivateMessage(ws, wss, messageData, data.targetId);
+        const targetClient = Array.from(wss.clients).find(client => 
+            client.userId === data.targetId
+        );
+        
+        if (targetClient) {
+            console.log('Sending private file message to:', data.targetId);
+            targetClient.send(JSON.stringify({
+                ...messageData,
+                privateTarget: sender.name
+            }));
+            ws.send(JSON.stringify({
+                ...messageData,
+                privateTarget: targetClient.userName
+            }));
+        }
     } else {
-        broadcastMessage(wss, messageData);
+        console.log('Broadcasting file message');
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(messageData));
+            }
+        });
     }
 }
 

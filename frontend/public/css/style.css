@@ -777,3 +777,69 @@ input[type="text"], select {
 .modal-buttons button:active {
     transform: scale(0.98);
 }
+
+/* 文件消息样式 */
+.file-message {
+    background: var(--bg-input);
+    padding: 12px;
+    border-radius: var(--border-radius-md);
+    margin-top: 8px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-size {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-top: 4px;
+}
+
+.download-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--accent-color);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: var(--border-radius-sm);
+    background: rgba(114, 137, 218, 0.1);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.download-link:hover {
+    background: rgba(114, 137, 218, 0.2);
+    color: var(--accent-hover);
+}
+
+.download-link .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.download-link.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.download-link.loading::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--accent-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
