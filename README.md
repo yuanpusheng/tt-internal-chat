@@ -1,35 +1,18 @@
-# 使用Cursor实现 WebSocket 聊天应用
-
-使用Cursor实现，一个基于 WebSocket 的实时聊天应用，支持私聊、文件传输和用户状态显示。
-
-## 功能特性
-
-- 实时消息传递
-- 私聊功能
-- 文件传输
-- 用户状态显示
-- 昵称修改
-- 响应式设计
-
-## 技术栈
-
-- 后端：Node.js, Express, ws
-- 前端：原生 JavaScript, WebSocket API
+# Chat App
 
 ## 项目结构
 
 ```
-chat-app/
+tt-internal-chat/
 ├── backend/
 │   ├── src/
 │   │   ├── server.js          # 主服务器文件
 │   │   ├── websocket/         # WebSocket 相关代码
 │   │   │   ├── handler.js     # WebSocket 消息处理
 │   │   │   └── clients.js     # 客户端管理
-│   │   └── utils/            # 工具函数
 │   │       └── helpers.js    # 辅助函数
 │   ├── package.json
-│   └── .env                  # 环境变量配置
+│   ├── Dockerfile            # 后端 Docker 配置
 │
 ├── frontend/
 │   ├── public/
@@ -43,10 +26,12 @@ chat-app/
 │   │       ├── websocket.js  # WebSocket客户端代码
 │   │       ├── ui.js         # UI相关代码
 │   │       └── utils.js      # 工具函数
-│   └── package.json
+│   ├── package.json
+│   ├── Dockerfile            # 前端 Docker 配置
+│   └── nginx.conf            # Nginx 配置文件
 │
+├── docker-compose.yml        # Docker 编排配置
 ├── .gitignore
-│
 └── README.md
 ```
 
@@ -96,6 +81,20 @@ npm run dev
 - `chat.css`: 聊天相关的样式
 - `style.css`: 主样式文件和通用样式
 
+### Docker 配置
+- `frontend/Dockerfile`: 前端 Nginx 容器配置
+  - 基于 nginx:alpine 镜像
+  - 复制前端文件到 Nginx 目录
+  - 配置 Nginx 服务器设置
+- `backend/Dockerfile`: 后端 Node.js 容器配置
+  - 基于 node:alpine 镜像
+  - 安装依赖
+  - 配置应用环境
+- `docker-compose.yml`: 多容器编排配置
+  - 定义前端和后端服务
+  - 配置网络和端口映射
+  - 设置容器间依赖关系
+
 ## 开发指南
 
 1. 后端开发
@@ -109,9 +108,16 @@ npm run dev
    - 主要的事件处理添加到 `main.js`
    - 样式修改应该遵循 CSS 文件的分层结构
 
+3. Docker 开发
+   - 修改 Dockerfile 时注意镜像大小优化
+   - 使用多阶段构建减小最终镜像体积
+   - 确保正确配置容器间的通信
+   - 注意环境变量的管理
+
 ## 注意事项
 
 - 确保在开发时遵循项目的文件结构
 - 新功能开发时注意代码的模块化
 - 保持代码风格的一致性
-- 定期测试所有功能的正常运行 
+- 定期测试所有功能的正常运行
+- Docker 相关修改需要重新构建镜像 
