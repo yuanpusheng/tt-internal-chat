@@ -71,7 +71,7 @@ class ChatWebSocket {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify(data));
         } else {
-            console.warn('WebSocket is not connected');
+            console.error('WebSocket is not open. Current state:', this.ws?.readyState);
         }
     }
 
@@ -84,16 +84,45 @@ class ChatWebSocket {
     }
 
     sendFile(file, targetId = '') {
+        console.log('Starting file send process:', { 
+            fileName: file.name, 
+            fileSize: file.size, 
+            targetId 
+        });
+
         const reader = new FileReader();
-        reader.onload = (e) => {
-            this.send({
-                type: 'file',
-                name: file.name,
-                size: file.size,
-                data: e.target.result,
-                targetId
-            });
+        
+        reader.onerror = (error) => {
+            console.error('Error reading file:', error);
         };
+
+        reader.onload = (e) => {
+            console.log('File read complete, preparing to send');
+            try {
+                const message = {
+                    type: 'file',
+                    name: file.name,
+                    size: file.size,
+                    data: e.target.result,
+                    targetId
+                };
+                
+                console.log('Sending file message:', { 
+                    ...message, 
+                    data: '[DATA]' 
+                });
+
+                if (this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify(message));
+                    console.log('File message sent successfully');
+                } else {
+                    console.error('WebSocket is not open. Current state:', this.ws.readyState);
+                }
+            } catch (error) {
+                console.error('Error sending file:', error);
+            }
+        };
+
         reader.readAsDataURL(file);
     }
 

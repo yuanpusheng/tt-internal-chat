@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     UI.elements.messageInput.addEventListener('keypress', handleKeyPress);
     UI.elements.fileInput.addEventListener('change', handleFileSelect);
     UI.elements.messageInput.addEventListener('input', handleInput);
+
+    // 添加调试日志
+    console.log('File input element:', UI.elements.fileInput);
+    UI.elements.fileInput.addEventListener('click', () => {
+        console.log('File input clicked');
+    });
 });
 
 // 消息处理函数
@@ -79,13 +85,15 @@ function handleKeyPress(e) {
     }
 }
 
-function handleFileSelect() {
-    const file = UI.elements.fileInput.files[0];
+function handleFileSelect(e) {
+    console.log('File select triggered', e);
+    const file = e.target.files[0];
     if (file) {
+        console.log('Selected file:', file);
         const maxSize = CURRENT_CONFIG.maxFileSize;
         if (file.size > maxSize) {
             alert(`文件大小不能超过 ${formatFileSize(maxSize)}`);
-            UI.elements.fileInput.value = '';
+            e.target.value = '';
             return;
         }
         chatWs.sendFile(file, UI.elements.messageTarget.value);

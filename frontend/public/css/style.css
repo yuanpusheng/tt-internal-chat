@@ -86,20 +86,39 @@ body {
 }
 
 .file-upload-btn {
-    display: flex;
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: background-color 0.2s;
-    opacity: 0.7;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
 
 .file-upload-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    opacity: 1;
+    background-color: var(--hover-color);
+}
+
+.file-upload-btn .icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.file-input:focus + .icon {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
 .message-target {

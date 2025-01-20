@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: chat-frontend
+    ports:
+      - "9999:9999"
+    depends_on:
+      - backend
+    networks:
+      - chat-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: chat-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - WS_PORT=${WS_PORT}
+      - WS_MAX_PAYLOAD=104857600 # 100MB
+      - WS_CHUNK_SIZE=1048576 # 1MB
+      - WS_COMPRESS_THRESHOLD=1048576 # 1MB
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge 
