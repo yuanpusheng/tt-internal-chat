@@ -121,3 +121,64 @@ npm run dev
 - 保持代码风格的一致性
 - 定期测试所有功能的正常运行
 - Docker 相关修改需要重新构建镜像 
+
+## 快速开始
+
+### Docker 一键部署
+
+1. 克隆项目
+```bash
+git clone https://github.com/yourusername/chat-app.git
+cd chat-app
+```
+
+2. 构建并启动容器
+```bash
+docker-compose up -d
+```
+
+3. 访问应用
+- 打开浏览器访问 `http://localhost:9999`
+- WebSocket 服务运行在 `ws://localhost:9999/ws`
+
+4. 查看日志
+```bash
+# 查看所有容器日志
+docker-compose logs -f
+
+# 查看前端容器日志
+docker-compose logs -f frontend
+
+# 查看后端容器日志
+docker-compose logs -f backend
+```
+
+5. 停止服务
+```bash
+docker-compose down
+```
+
+### 环境要求
+- Docker 20.10.0 或更高版本
+- Docker Compose 2.0.0 或更高版本
+- 确保 9999 端口未被占用
+
+### 常见问题
+1. 端口冲突
+   - 修改 `docker-compose.yml` 中的端口映射
+   - 修改 `frontend/nginx.conf` 中的监听端口
+   - 修改 `frontend/public/js/config.js` 中的 WebSocket 连接地址
+
+2. 容器无法启动
+   - 检查 Docker 服务状态
+   - 查看容器日志定位问题
+   - 确保所有配置文件存在
+
+3. WebSocket 连接失败
+   - 检查 nginx 配置中的 WebSocket 代理设置
+   - 确认后端服务正常运行
+   - 查看浏览器控制台网络请求
+
+## 项目结构
+
+[原有的项目结构部分保持不变...] 
