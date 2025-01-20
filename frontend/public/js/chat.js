@@ -6,7 +6,9 @@ class ChatWs {
     }
 
     setupWebSocket() {
-        this.socket = new WebSocket(WS_URL);
+        const wsUrl = `${CURRENT_CONFIG.wsProtocol}//${CURRENT_CONFIG.wsHost}${storedUserId ? `?clientId=${storedUserId}` : ''}`;
+
+        this.socket = new WebSocket(wsUrl);
         
         this.socket.onopen = () => {
             console.log('WebSocket connected');
