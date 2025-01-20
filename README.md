@@ -1,6 +1,6 @@
-# WebSocket 聊天应用
+# 使用Cursor实现 WebSocket 聊天应用
 
-一个基于 WebSocket 的实时聊天应用，支持私聊、文件传输和用户状态显示。
+使用Cursor实现，一个基于 WebSocket 的实时聊天应用，支持私聊、文件传输和用户状态显示。
 
 ## 功能特性
 
