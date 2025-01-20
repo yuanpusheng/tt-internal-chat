@@ -1,0 +1,30 @@
+:root {
+    /* 颜色变量 */
+    --bg-primary: #36393f;
+    --bg-secondary: #2f3136;
+    --bg-tertiary: #202225;
+    --bg-input: #40444b;
+    
+    --text-primary: #dcddde;
+    --text-secondary: #8e9297;
+    --text-muted: #72767d;
+    
+    --accent-color: #7289da;
+    --accent-hover: #677bc4;
+    
+    --border-color: #1a1b1e;
+    
+    /* 阴影变量 */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.20);
+    
+    /* 过渡变量 */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+    
+    /* 尺寸变量 */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+} 

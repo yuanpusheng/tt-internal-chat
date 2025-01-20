@@ -1,0 +1,18 @@
+{
+  "name": "chat-backend",
+  "version": "1.0.0",
+  "description": "WebSocket Chat Application Backend",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "port": "node src/server.js --port"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+} 

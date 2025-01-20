@@ -1,0 +1,135 @@
+/* 聊天消息样式 */
+.message {
+    margin: 8px 0;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-md);
+    background: var(--bg-input);
+    transition: background-color var(--transition-fast);
+}
+
+.message-self {
+    background: var(--accent-color);
+}
+
+.message .time {
+    color: var(--text-secondary);
+    font-size: 0.8em;
+    margin-right: 8px;
+}
+
+.message .content {
+    word-break: break-word;
+}
+
+.private-message {
+    background: rgba(114, 137, 218, 0.2);
+}
+
+.private-message .target-info {
+    color: var(--accent-color);
+    font-size: 0.9em;
+    margin-left: 8px;
+}
+
+/* 用户列表样式 */
+.online-user {
+    padding: 10px 16px;
+    margin: 2px 0;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.status-indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.status-indicator.online {
+    background: rgba(35, 165, 90, 0.2);
+}
+
+.status-indicator.online::after {
+    background: rgb(35, 165, 90);
+    box-shadow: 0 0 8px rgba(35, 165, 90, 0.5);
+}
+
+.status-indicator.offline {
+    background: rgba(240, 71, 71, 0.2);
+}
+
+.status-indicator.offline::after {
+    background: rgb(240, 71, 71);
+    box-shadow: 0 0 8px rgba(240, 71, 71, 0.5);
+}
+
+/* 文件消息样式 */
+.file-message {
+    display: inline-block;
+    background: rgba(79, 84, 92, 0.2);
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    margin-top: 4px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+}
+
+/* 用户标签样式 */
+.user-tag {
+    color: var(--accent-color);
+    font-size: 0.85em;
+}
+
+/* 输入框占位符样式 */
+#messageInput::placeholder {
+    color: var(--text-secondary);
+}
+
+/* 选择框选项样式 */
+.message-target option {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    padding: 8px;
+}
+
+/* 悬停效果 */
+.current-user:hover::after {
+    content: '点击修改昵称';
+    position: absolute;
+    right: 12px;
+    color: var(--text-secondary);
+    font-size: 0.85em;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 0.7;
+    }
+}
+
+/* ... 其他聊天相关样式 ... */ 

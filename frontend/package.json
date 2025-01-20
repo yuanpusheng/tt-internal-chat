@@ -1,0 +1,12 @@
+{
+  "name": "chat-app-frontend",
+  "version": "1.0.0",
+  "description": "WebSocket Chat Application Frontend",
+  "scripts": {
+    "start": "NODE_NO_WARNINGS=1 serve public -s",
+    "dev": "NODE_NO_WARNINGS=1 serve public -s -l 3001"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+} 
