@@ -128,8 +128,8 @@ npm run dev
 
 1. 克隆项目
 ```bash
-git clone https://github.com/yourusername/chat-app.git
-cd chat-app
+git clone [https://github.com/yourusername/chat-app.git](https://github.com/yuanpusheng/tt-internal-chat)
+cd tt-internal-chat
 ```
 
 2. 构建并启动容器
