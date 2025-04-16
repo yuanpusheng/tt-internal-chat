@@ -1,21 +1,21 @@
 const CONFIG = {
     development: {
-        wsHost: '10.200.21.115:9999/ws',
+        wsHost: '10.200.21.246:9999/ws',
         wsProtocol: 'ws:',
         reconnectInterval: 3000,
-        maxFileSize: 10 * 1024 * 1024  // 10MB
+        maxFileSize: 100 * 1024 * 1024  // 100MB
     },
     test: {
         wsHost: 'test-api.example.com/ws',
         wsProtocol: 'wss:',
         reconnectInterval: 5000,
-        maxFileSize: 20 * 1024 * 1024  // 20MB
+        maxFileSize: 200 * 1024 * 1024  // 200MB
     },
     production: {
         wsHost: window.location.host,
         wsProtocol: window.location.protocol === 'https:' ? 'wss:' : 'ws:',
         reconnectInterval: 5000,
-        maxFileSize: 50 * 1024 * 1024  // 50MB
+        maxFileSize: 500 * 1024 * 1024  // 500MB
     }
 }; 
 

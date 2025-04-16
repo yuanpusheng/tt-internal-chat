@@ -24,9 +24,6 @@ services:
       - NODE_ENV=${NODE_ENV}
       - PORT=${PORT}
       - WS_PORT=${WS_PORT}
-      - WS_MAX_PAYLOAD=104857600 # 100MB
-      - WS_CHUNK_SIZE=1048576 # 1MB
-      - WS_COMPRESS_THRESHOLD=1048576 # 1MB
     env_file:
       - .env
     volumes:

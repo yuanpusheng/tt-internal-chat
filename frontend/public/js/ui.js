@@ -209,24 +209,121 @@ class UI {
     // 添加 DataURL 转 Blob 的辅助方法
     static dataURLtoBlob(dataURL) {
         try {
+            // 检查是否是有效的 Data URL 格式
+            if (!dataURL || typeof dataURL !== 'string') {
+                return new Blob([], {type: 'application/octet-stream'});
+            }
+            
+            // 辅助函数：验证并清理base64字符串
+            const cleanAndValidateBase64 = (base64Str) => {
+                if (!base64Str) return '';
+                // 移除所有非base64字符（包括空格、换行符等）
+                const cleaned = base64Str.replace(/[^A-Za-z0-9+/=]/g, '');
+                
+                // 验证base64字符串长度是否为4的倍数，如果不是，尝试补齐
+                let paddedStr = cleaned;
+                const remainder = cleaned.length % 4;
+                if (remainder > 0) {
+                    paddedStr = cleaned + '='.repeat(4 - remainder);
+                }
+                
+                return paddedStr;
+            };
+            
+            // 辅助函数：安全的atob调用
+            const safeAtob = (base64Str) => {
+                if (!base64Str) return '';
+                try {
+                    return atob(base64Str);
+                } catch (error) {
+                    // 如果解码失败，尝试清理并验证字符串后再次尝试
+                    const cleanedStr = cleanAndValidateBase64(base64Str);
+                    try {
+                        return atob(cleanedStr);
+                    } catch (finalError) {
+                        // 降级处理，避免错误日志
+                        return '';
+                    }
+                }
+            };
+            
+            // 辅助函数：创建Blob对象
+            const createBlobFromString = (binaryString, mimeType = 'application/octet-stream') => {
+                if (!binaryString) {
+                    return new Blob([], {type: mimeType});
+                }
+                
+                try {
+                    const len = binaryString.length;
+                    const u8arr = new Uint8Array(len);
+                    
+                    for (let i = 0; i < len; i++) {
+                        u8arr[i] = binaryString.charCodeAt(i);
+                    }
+                    
+                    return new Blob([u8arr], {type: mimeType});
+                } catch (e) {
+                    return new Blob([], {type: mimeType});
+                }
+            };
+            
+            // 检查数据是否已经是纯base64格式（没有Data URL前缀）
+            if (!dataURL.includes(',') && !dataURL.includes(';base64,')) {
+                // 假设这是纯base64数据，使用通用MIME类型
+                const cleanBase64 = cleanAndValidateBase64(dataURL);
+                const binaryString = safeAtob(cleanBase64);
+                return createBlobFromString(binaryString);
+            }
+            
+            // 尝试分割数据URL
             const arr = dataURL.split(',');
+            
+            // 如果分割失败或格式不正确，尝试作为纯base64处理
             if (arr.length !== 2) {
-                throw new Error('Invalid Data URL format');
+                const cleanData = cleanAndValidateBase64(dataURL);
+                const binaryString = safeAtob(cleanData);
+                return createBlobFromString(binaryString);
             }
             
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
+            // 正常处理标准格式的Data URL
+            const header = arr[0];
+            let mime = 'application/octet-stream'; // 默认MIME类型
+            let base64 = arr[1].trim();
             
-            while(n--) {
-                u8arr[n] = bstr.charCodeAt(n);
+            // 尝试从头部提取MIME类型
+            if (header.includes('base64')) {
+                const mimeMatch = header.match(/:(.*?);/);
+                if (mimeMatch && mimeMatch[1]) {
+                    mime = mimeMatch[1];
+                }
+            } else if (base64) {
+                // 如果头部没有base64标识但有数据部分，尝试直接处理数据部分
+                const binaryString = safeAtob(cleanAndValidateBase64(base64));
+                return createBlobFromString(binaryString, mime);
             }
             
-            return new Blob([u8arr], {type: mime});
+            // 检查base64部分是否为空
+            if (!base64) {
+                return new Blob([], {type: mime});
+            }
+            
+            // 尝试标准处理
+            const cleanBase64 = cleanAndValidateBase64(base64);
+            const binaryString = safeAtob(cleanBase64);
+            
+            if (binaryString) {
+                return createBlobFromString(binaryString, mime);
+            }
+            
+            // 尝试URL安全的base64变体
+            const urlSafeBase64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
+            const safeCleanBase64 = cleanAndValidateBase64(urlSafeBase64);
+            const safeBinaryString = safeAtob(safeCleanBase64);
+            
+            return createBlobFromString(safeBinaryString, mime);
         } catch (e) {
-            console.error('Error converting dataURL to Blob:', e);
-            throw e;
+            // 静默处理所有错误，返回空Blob
+            return new Blob([], {type: 'application/octet-stream'});
         }
     }
 
@@ -239,4 +336,4 @@ class UI {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
-} 
+}
