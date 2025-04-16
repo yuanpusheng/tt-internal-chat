@@ -128,7 +128,8 @@ npm run dev
 
 1. 克隆项目
 ```bash
-git clone https://github.com/yourusername/tt-internal-chat.git
+
+git clone https://github.com/yuanpusheng/tt-internal-chat.git
 cd tt-internal-chat
 ```
 
